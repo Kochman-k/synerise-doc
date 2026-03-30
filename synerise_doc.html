@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synerise — Behavioral AI Platform</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  @font-face { font-family: 'Graphik'; src: url('Graphik-Thin.otf'); font-weight: 100; font-style: normal; }
+  @font-face { font-family: 'Graphik'; src: url('Graphik-ThinItalic.otf'); font-weight: 100; font-style: italic; }
+  @font-face { font-family: 'Graphik'; src: url('Graphik-Extralight.otf'); font-weight: 200; font-style: normal; }
+  @font-face { font-family: 'Graphik'; src: url('Graphik-ExtralightItalic.otf'); font-weight: 200; font-style: italic; }
+  @font-face { font-family: 'Graphik'; src: url('Graphik-Light.otf'); font-weight: 300; font-style: normal; }
+  @font-face { font-family: 'Graphik'; src: url('Graphik-LightItalic.otf'); font-weight: 300; font-style: italic; }
+  @font-face { font-family: 'Graphik'; src: url('Graphik-Regular.otf'); font-weight: 400; font-style: normal; }
+  @font-face { font-family: 'Graphik'; src: url('Graphik-RegularItalic.otf'); font-weight: 400; font-style: italic; }
+  @font-face { font-family: 'Graphik'; src: url('Graphik-Medium.otf'); font-weight: 500; font-style: normal; }
+  @font-face { font-family: 'Graphik'; src: url('Graphik-MediumItalic.otf'); font-weight: 500; font-style: italic; }
+  @font-face { font-family: 'Graphik'; src: url('Graphik-Semibold.otf'); font-weight: 600; font-style: normal; }
+  @font-face { font-family: 'Graphik'; src: url('Graphik-SemiboldItalic.otf'); font-weight: 600; font-style: italic; }
+  @font-face { font-family: 'Graphik'; src: url('Graphik-Bold.otf'); font-weight: 700; font-style: normal; }
+  @font-face { font-family: 'Graphik'; src: url('Graphik-BoldItalic.otf'); font-weight: 700; font-style: italic; }
+  @font-face { font-family: 'Graphik'; src: url('Graphik-Black.otf'); font-weight: 800; font-style: normal; }
+  @font-face { font-family: 'Graphik'; src: url('Graphik-BlackItalic.otf'); font-weight: 800; font-style: italic; }
+  @font-face { font-family: 'Graphik'; src: url('Graphik-Super.otf'); font-weight: 900; font-style: normal; }
+  @font-face { font-family: 'Graphik'; src: url('Graphik-SuperItalic.otf'); font-weight: 900; font-style: italic; }
+
+  body {
+    font-family: 'Graphik', 'Calibri', 'Segoe UI', Arial, sans-serif;
+    font-size: 11pt;
+    color: #000;
+    background: #fff;
+    line-height: 1.5;
+  }
+
+  strong, b { font-weight: 500; }
+
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 72px 72px 80px;
+  }
+
+  /* ── HEADINGS — exact match to screenshots ── */
+
+  /* "Headers" / "Tables" — top level section title, very large bold */
+  h1.section {
+    font-size: 28pt;
+    font-weight: 700;
+    color: #000;
+    margin: 0 0 24px 0;
+    line-height: 1.15;
+  }
+
+  /* H1 equivalent — large bold, same as "H1: The quick brown fox" */
+  h1 {
+    font-size: 22pt;
+    font-weight: 700;
+    color: #000;
+    margin: 32px 0 12px 0;
+    line-height: 1.15;
+  }
+
+  /* H2 equivalent — medium bold, same as "H2: Basic Tables" */
+  h2 {
+    font-size: 16pt;
+    font-weight: 700;
+    color: #000;
+    margin: 28px 0 10px 0;
+    line-height: 1.2;
+  }
+
+  /* H3 — numbered "1. Default", bold, indented */
+  h3 {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #000;
+    margin: 20px 0 8px 0;
+    padding-left: 36px;
+    text-indent: -36px;
+  }
+  h3::before {
+    content: attr(data-n) ".\00a0\00a0\00a0\00a0\00a0";
+  }
+
+  /* H4 — numbered "1.1. H4", bold, indented */
+  h4 {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #000;
+    margin: 16px 0 6px 0;
+    padding-left: 48px;
+    text-indent: -48px;
+  }
+  h4::before {
+    content: attr(data-n) ".\00a0\00a0\00a0\00a0\00a0";
+  }
+
+  /* H5 — "1.1.1. H5", bold small */
+  h5 {
+    font-size: 10pt;
+    font-weight: 700;
+    color: #000;
+    margin: 14px 0 6px 0;
+    padding-left: 56px;
+    text-indent: -56px;
+  }
+  h5::before {
+    content: attr(data-n) ".\00a0\00a0\00a0\00a0\00a0";
+  }
+
+  /* H6 — UPPERCASE bold small */
+  h6 {
+    font-size: 10pt;
+    font-weight: 700;
+    color: #000;
+    text-transform: uppercase;
+    margin: 12px 0 6px 0;
+    padding-left: 64px;
+    text-indent: -64px;
+  }
+  h6::before {
+    content: attr(data-n) ".\00a0\00a0\00a0\00a0\00a0";
+  }
+
+  p {
+    font-size: 11pt;
+    color: #000;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  /* ── TABLES ── */
+
+  /* Default — bold header row, solid outer border, solid inner lines */
+  table.default {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11pt;
+    margin: 8px 0 20px;
+  }
+  table.default th {
+    font-weight: 700;
+    padding: 5px 8px;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    border-top: 1px solid #000;
+    border-bottom: 2px solid #000;
+    text-align: left;
+    background: #fff;
+  }
+  table.default td {
+    padding: 5px 8px;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    border-bottom: 1px solid #000;
+    vertical-align: top;
+    line-height: 1.4;
+  }
+
+  /* Light grid — bold header, dotted inner lines */
+  table.light {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11pt;
+    margin: 8px 0 20px;
+  }
+  table.light th {
+    font-weight: 700;
+    padding: 8px 10px;
+    border-bottom: 2px solid #000;
+    text-align: left;
+    background: #fff;
+  }
+  table.light td {
+    padding: 8px 10px;
+    border-bottom: 1px dotted #aaa;
+    vertical-align: top;
+    line-height: 1.4;
+  }
+
+  /* Banded — no header bg, alternating row fill */
+  table.banded {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11pt;
+    margin: 8px 0 20px;
+  }
+  table.banded th {
+    font-weight: 700;
+    padding: 5px 8px;
+    text-align: left;
+    background: #fff;
+    border-bottom: 2px solid #000;
+  }
+  table.banded td {
+    padding: 5px 8px;
+    vertical-align: top;
+    line-height: 1.4;
+  }
+  table.banded tr:nth-child(odd) td { background: #fff; }
+  table.banded tr:nth-child(even) td { background: #fff; }
+  table.banded tr:last-child td { border-bottom: none; }
+
+  /* Signatures */
+  table.signatures {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11pt;
+    margin: 8px 0 20px;
+  }
+  table.signatures td {
+    padding: 8px 10px;
+    border: 1px solid #000;
+    width: 50%;
+    vertical-align: top;
+    line-height: 2.2;
+  }
+
+  /* ── BLOCKQUOTE (default) ── */
+  blockquote {
+    border-left: 4px solid #000;
+    padding: 4px 0 4px 16px;
+    margin: 14px 0 14px 0;
+    font-size: 11pt;
+    font-style: italic;
+    color: #000;
+    line-height: 1.5;
+  }
+  blockquote cite {
+    display: block;
+    font-style: normal;
+    font-size: 10pt;
+    font-weight: 500;
+    margin-top: 6px;
+  }
+  blockquote cite .role {
+    font-weight: 400;
+  }
+
+  /* ── BLOCKQUOTE INTENSE ── */
+  .quote-intense {
+    background: #000;
+    color: #fff;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 11pt;
+    font-style: italic;
+    line-height: 1.5;
+  }
+  .quote-intense cite {
+    display: block;
+    font-style: normal;
+    font-size: 10pt;
+    font-weight: 500;
+    margin-top: 8px;
+    color: #ccc;
+  }
+
+  /* ── INFO BOX ── */
+  .info-box {
+    border: 1px solid #000;
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-size: 10.5pt;
+    line-height: 1.5;
+  }
+
+  /* ── METRICS GRID ── */
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 1px solid #000;
+    margin: 14px 0 20px;
+  }
+  .metric {
+    padding: 14px 10px;
+    border-right: 1px solid #000;
+    border-bottom: 1px solid #000;
+    text-align: center;
+  }
+  .metric:nth-child(4n) { border-right: none; }
+  .metric:nth-last-child(-n+4) { border-bottom: none; }
+  .metric-num {
+    font-size: 18pt;
+    font-weight: 500;
+    color: #000;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .metric-label {
+    font-size: 8pt;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── HUB GRID ── */
+  .hub-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid #000;
+    margin: 10px 0 18px;
+  }
+  .hub-card {
+    padding: 12px 14px;
+    border-right: 1px solid #000;
+    border-bottom: 1px solid #000;
+  }
+  .hub-card:nth-child(2n) { border-right: none; }
+  .hub-card:nth-last-child(-n+2) { border-bottom: none; }
+  .hub-num {
+    font-size: 8.5pt;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .hub-title {
+    font-size: 11pt;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .hub-desc {
+    font-size: 10pt;
+    color: #333;
+    line-height: 1.4;
+  }
+  .hub-stat {
+    font-size: 9pt;
+    font-weight: 500;
+    margin-top: 6px;
+    color: #000;
+  }
+
+  /* ── TOC ── */
+  .toc-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11pt;
+    padding: 3px 0;
+    border-bottom: 1px dotted #bbb;
+  }
+  .toc-row.sub { padding-left: 20px; font-size: 10.5pt; }
+  .toc-row.sub2 { padding-left: 40px; font-size: 10pt; color: #444; }
+  .toc-num { color: #555; min-width: 28px; text-align: right; }
+
+  /* ── WHY BLOCK ── */
+  .why-block {
+    margin: 16px 0;
+  }
+  .why-block h3 {
+    padding-left: 0;
+    text-indent: 0;
+    font-size: 11.5pt;
+    margin-bottom: 4px;
+  }
+  .why-block h3::before { content: none; }
+
+  /* ── DIVIDER ── */
+  hr {
+    border: none;
+    border-top: 1px solid #000;
+    margin: 28px 0;
+  }
+  hr.thick {
+    border-top: 2px solid #000;
+    margin: 36px 0 28px;
+  }
+
+  /* ── RUNNING HEADER ── */
+  .running-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 8.5pt;
+    color: #555;
+    border-bottom: 0.5px solid #ccc;
+    padding: 10px 72px 6px;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    padding: 72px 72px 80px;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .cover-logo {
+    font-size: 9pt;
+    color: #555;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 200px;
+  }
+  .cover-title {
+    font-size: 28pt;
+    font-weight: 500;
+    color: #000;
+    line-height: 1.15;
+    margin-bottom: 10px;
+  }
+  .cover-subtitle {
+    font-size: 16pt;
+    font-weight: 400;
+    color: #000;
+    margin-bottom: 28px;
+  }
+  .cover-meta {
+    font-size: 10pt;
+    color: #555;
+    margin-bottom: 4px;
+  }
+  .cover-footer {
+    border-top: 1px solid #000;
+    padding-top: 14px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 9pt;
+    color: #555;
+  }
+
+  /* ── PAGE ── */
+  .doc-page {
+    padding: 48px 72px 60px;
+  }
+
+  /* badge */
+  .badge {
+    display: inline-block;
+    font-size: 7.5pt;
+    font-weight: 500;
+    padding: 1px 5px;
+    border: 1px solid #000;
+    vertical-align: middle;
+    margin-left: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .page-footer {
+    font-size: 8.5pt;
+    color: #555;
+    text-align: center;
+    padding-top: 20px;
+    border-top: 0.5px solid #ccc;
+    margin-top: 40px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ COVER ═══ -->
+<div class="cover">
+  <div>
+    <div class="cover-logo">Synerise SA &nbsp;·&nbsp; synerise.com &nbsp;·&nbsp; © 2026</div>
+    <div class="cover-title">Behavioral AI Platform<br>Capabilities &amp; Performance</div>
+    <div class="cover-subtitle">Platform Reference Document</div>
+    <hr>
+    <p class="cover-meta">Prepared: 2026</p>
+    <p class="cover-meta">Classification: Confidential</p>
+    <p class="cover-meta">Version: 1.0</p>
+  </div>
+  <div class="cover-footer">
+    <span>synerise.com &nbsp;·&nbsp; © 2026 Synerise SA</span>
+    <span>Platform Reference Document</span>
+  </div>
+</div>
+
+<!-- ═══ TOC ═══ -->
+<div class="running-header">
+  <span>Synerise — Behavioral AI Platform</span>
+  <span>Table of Contents</span>
+</div>
+<div class="doc-page">
+  <h1 class="section">Table of Contents</h1>
+  <div class="toc-row"><span>1.&nbsp; Platform Overview</span><span class="toc-num">2</span></div>
+  <div class="toc-row sub"><span>Six Hubs. One Platform.</span><span class="toc-num">2</span></div>
+  <div class="toc-row sub"><span>Key performance indicators</span><span class="toc-num">2</span></div>
+  <div class="toc-row"><span>2.&nbsp; Benchmarks &amp; Proven Results</span><span class="toc-num">3</span></div>
+  <div class="toc-row sub"><span>AI benchmarks vs Google DeepMind and Meta AI</span><span class="toc-num">3</span></div>
+  <div class="toc-row sub"><span>Proven in production — client KPIs</span><span class="toc-num">3</span></div>
+  <div class="toc-row"><span>3.&nbsp; Cross-Industry Deployment</span><span class="toc-num">4</span></div>
+  <div class="toc-row"><span>4.&nbsp; Why Synerise Is Different</span><span class="toc-num">4</span></div>
+  <div class="toc-row"><span>5.&nbsp; Platform Capabilities by Hub</span><span class="toc-num">5</span></div>
+  <div class="toc-row sub"><span>Hub 1 — Behavioral Data Hub</span><span class="toc-num">5</span></div>
+  <div class="toc-row sub"><span>Hub 2 — AI Hub</span><span class="toc-num">6</span></div>
+  <div class="toc-row sub"><span>Hub 3 — Automation Hub</span><span class="toc-num">7</span></div>
+  <div class="toc-row sub"><span>Hub 4 — Decision Hub</span><span class="toc-num">8</span></div>
+  <div class="toc-row sub"><span>Hub 5 — Data Modeling Hub</span><span class="toc-num">9</span></div>
+  <div class="toc-row sub"><span>Hub 6 — Experience Hub</span><span class="toc-num">10</span></div>
+  <div class="toc-row"><span>6.&nbsp; Endorsed by Industry Leaders</span><span class="toc-num">11</span></div>
+</div>
+
+<!-- ═══ §1 PLATFORM OVERVIEW ═══ -->
+<div class="running-header">
+  <span>Synerise — Behavioral AI Platform</span>
+  <span>1. Platform Overview</span>
+</div>
+<div class="doc-page">
+  <h1 class="section">Platform Overview</h1>
+  <p>Gartner-recognized leaders in commerce, data, and retail intelligence — including dunnhumby and VTEX — chose Synerise as the behavioral AI layer powering their platforms. Not as an integration. As infrastructure.</p>
+
+  <h2>Six Hubs. One Platform. Infinitely Configurable.</h2>
+  <p>Modular, API-first, independently deployable. No all-or-nothing lock-in. Enterprise-grade security, compliance, and SLA.</p>
+
+  <div class="hub-grid">
+    <div class="hub-card"><div class="hub-num">Hub 1 / 6</div><div class="hub-title">Behavioral Data Hub</div><div class="hub-desc">Unlimited profiles, unlimited attributes, zero schema constraints — on TerrariumDB, processing 31B+ events/month.</div><div class="hub-stat">31B+ events/month · &lt;1ms data access</div></div>
+    <div class="hub-card"><div class="hub-num">Hub 2 / 6</div><div class="hub-title">AI Hub</div><div class="hub-desc">Outperforms Google DeepMind and Meta AI in benchmarks. 3.8B recommendations/month at &lt;1ms inference.</div><div class="hub-stat">3.8B recommendations/month · 97.3% AUC</div></div>
+    <div class="hub-card"><div class="hub-num">Hub 3 / 6</div><div class="hub-title">Automation Hub</div><div class="hub-desc">Behavior-triggered, not calendar-triggered. 12B workflow decisions/month with AI-optimized channel and timing.</div><div class="hub-stat">12B decisions/month · 16× faster setup</div></div>
+    <div class="hub-card"><div class="hub-num">Hub 4 / 6</div><div class="hub-title">Decision Hub</div><div class="hub-desc">&gt;90B queries/month on a schema-free engine. Real-time dashboards, segmentation, and attribution — no ETL.</div><div class="hub-stat">&gt;90B queries/month · &lt;100ms segmentation</div></div>
+    <div class="hub-card"><div class="hub-num">Hub 5 / 6</div><div class="hub-title">Data Modeling Hub</div><div class="hub-desc">Any entity, any schema, zero migrations. Model your business, not the vendor's data structure.</div><div class="hub-stat">Unlimited custom entities · 0 migrations</div></div>
+    <div class="hub-card"><div class="hub-num">Hub 6 / 6</div><div class="hub-title">Experience Hub</div><div class="hub-desc">Every channel from one system — email, push, SMS, WhatsApp, in-app, loyalty, promotions, vouchers.</div><div class="hub-stat">+40% revenue from personalization</div></div>
+  </div>
+
+  <h2>Key Performance Indicators</h2>
+  <div class="metrics">
+    <div class="metric"><div class="metric-num">150B+</div><div class="metric-label">Behavioral sequences</div></div>
+    <div class="metric"><div class="metric-num">2.8B</div><div class="metric-label">Predictions daily</div></div>
+    <div class="metric"><div class="metric-num">&lt;1ms</div><div class="metric-label">Inference latency</div></div>
+    <div class="metric"><div class="metric-num">218</div><div class="metric-label">Organizations</div></div>
+    <div class="metric"><div class="metric-num">49</div><div class="metric-label">Countries</div></div>
+    <div class="metric"><div class="metric-num">18</div><div class="metric-label">Industries</div></div>
+    <div class="metric"><div class="metric-num">150B€</div><div class="metric-label">GMV processed</div></div>
+    <div class="metric"><div class="metric-num">31B+</div><div class="metric-label">Events/month</div></div>
+  </div>
+</div>
+
+<!-- ═══ §2 BENCHMARKS ═══ -->
+<div class="running-header">
+  <span>Synerise — Behavioral AI Platform</span>
+  <span>2. Benchmarks &amp; Proven Results</span>
+</div>
+<div class="doc-page">
+  <h1 class="section">Benchmarks &amp; Proven Results</h1>
+
+  <h2>AI That Outperforms Google DeepMind and Meta</h2>
+  <table class="default">
+    <thead><tr><th>Benchmark</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td>More accurate than Google DeepMind's best recommendation model</td><td>24–62% improvement over TIGER (NeurIPS 2023). Fewer wasted impressions. More revenue per touchpoint.</td></tr>
+      <tr><td>Outperforms Meta AI on understanding customer intent</td><td>Up to 292% improvement over Meta's HSTU — the engine behind recommendations for billions of Facebook and Instagram users.</td></tr>
+      <tr><td>3.6× better cold-start performance than Meta's LIGER</td><td>New customers convert from the first interaction. The invisible revenue leak most platforms ignore — solved.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="metrics">
+    <div class="metric"><div class="metric-num">150B+</div><div class="metric-label">Behavioral sequences</div></div>
+    <div class="metric"><div class="metric-num">2.8B</div><div class="metric-label">Predictions daily</div></div>
+    <div class="metric"><div class="metric-num">&lt;1ms</div><div class="metric-label">Inference latency</div></div>
+    <div class="metric"><div class="metric-num">RecSys 2025</div><div class="metric-label">Challenge organizer</div></div>
+  </div>
+  <p style="font-size:9.5pt;color:#555;margin-top:-10px;">Organizer of RecSys Challenge 2025 — a position previously held by Spotify and Twitter.</p>
+
+  <h2>Proven in Production — Client KPIs</h2>
+  <table class="default">
+    <thead><tr><th>Client</th><th>KPI</th><th>Detail</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Empik</strong></td><td>5× conversion rate vs mass campaigns · 1B personalized campaigns · 170M automated in real time</td><td>AI-driven personalization across 370+ stores, web, and app for 11M+ customers. NPS: 82 (online) / 86 (stores).</td></tr>
+      <tr><td><strong>Nike</strong></td><td>+30% sales per ticket · +26% orders · +30% demand growth</td><td>Real-time orchestration, WhatsApp commerce, and AI recommendations across Nike Chile's digital stack.</td></tr>
+      <tr><td><strong>MODIVO</strong></td><td>+21% open rate · +18% CTR · +7% conversion rate</td><td>BaseModel.ai hyper-personalized campaigns across 17 European markets. No additional discounts needed.</td></tr>
+      <tr><td><strong>AI Search</strong></td><td>10% of traffic drives 30% of revenue</td><td>Search users convert at 3× the site average. 26.72% CTR — 2–4× above benchmarks.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══ §3 CROSS-INDUSTRY ═══ -->
+<div class="running-header">
+  <span>Synerise — Behavioral AI Platform</span>
+  <span>3. Cross-Industry Deployment</span>
+</div>
+<div class="doc-page">
+  <h1 class="section">Cross-Industry Deployment</h1>
+  <p>Proven across 18 industries and 49 countries, with 218 organizations and 150B EUR GMV processed.</p>
+
+  <table class="default">
+    <thead><tr><th>Industry</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Retail &amp; E-commerce</strong></td><td>Behavioral personalization across 17 European markets — AI-driven campaigns, recommendations, and scoring at multi-market scale.</td></tr>
+      <tr><td><strong>Fashion &amp; Sport</strong></td><td>End-to-end digital commerce transformation — from first touchpoint to WhatsApp conversion.</td></tr>
+      <tr><td><strong>Telco</strong></td><td>Omnichannel &amp; eCare optimization for 20M+ accounts — in-app recommendations, push, dynamic content, retention-focused journeys.</td></tr>
+      <tr><td><strong>Banking</strong></td><td>BNP Paribas · US Bank Network — behavioral AI in regulated environments — churn prediction, deposit growth, and personalization under strict compliance requirements.</td></tr>
+      <tr><td><strong>Commerce &amp; Loyalty</strong></td><td>VTEX · dunnhumby — Gartner MQ Leaders who chose Synerise as their AI infrastructure engine. Most complete VTEX integration among martech platforms.</td></tr>
+    </tbody>
+  </table>
+
+  <blockquote>
+    "Synerise is a hidden pearl from Krakow, Poland. The Synerise product BaseModel is the world's most advanced private foundation model for behavioral data. The AI functionalities VTEX will be able to deploy with Synerise is disruptive."
+    <cite><strong>Mariano Gomide de Faria</strong> <span class="role">— Co-CEO, VTEX (Gartner MQ Leader, Digital Commerce)</span></cite>
+  </blockquote>
+
+  <h2>Partner Network</h2>
+  <table class="light">
+    <thead><tr><th>Partner</th><th>Details</th><th>Results</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Infracommerce</strong></td><td>Exclusive VTEX-certified Synerise partner since 2022, 20+ brands live.</td><td>+25.83% conversion · +12.91% AOV · +41.56% incremental revenue</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══ §4 WHY DIFFERENT ═══ -->
+<div class="running-header">
+  <span>Synerise — Behavioral AI Platform</span>
+  <span>4. Why Synerise Is Different</span>
+</div>
+<div class="doc-page">
+  <h1 class="section">Why Synerise Is Different</h1>
+
+  <div class="why-block">
+    <h3 data-n="">Predictive behavioral AI — not a feature, the foundation.</h3>
+    <p>Most platforms apply AI as a layer on top of stored data. Synerise runs proprietary machine learning models inside the data processing engine itself. Every customer profile continuously emits live predictions — purchase probability, churn risk, next-best action — recomputed in real time as each new behavioral signal arrives. This is not assisted automation. It is a platform that anticipates what each individual will do before they do it, and acts on that prediction without human instruction.</p>
+  </div>
+
+  <div class="why-block">
+    <h3 data-n="">Schemaless behavioral data — no caps, no predefined limits.</h3>
+    <p>Conventional platforms force your customer data into a fixed schema: a defined set of attributes, event types, and profile fields decided by the vendor. Synerise is schemaless. Any event, any attribute, any behavioral signal — regardless of source, structure, or volume — is ingested, stored, and made immediately queryable. There are no attribute caps, no event type restrictions, no data that gets discarded because it doesn't fit the model.</p>
+  </div>
+
+  <div class="why-block">
+    <h3 data-n="">Real time is architectural, not a setting.</h3>
+    <p>Synerise was built on a proprietary real-time database engineered specifically for behavioral data. Profile updates happen in milliseconds — the moment an event occurs, the profile reflects it, the predictive models recompute, and the next action fires. Online and offline signals — including POS and in-store transactions — flow through the same engine with no import jobs, no sync delays, no pipeline latency. For most platforms, real time is a feature you turn on. For Synerise, it is the only mode that exists.</p>
+  </div>
+</div>
+
+<!-- ═══ HUB 1 ═══ -->
+<div class="running-header">
+  <span>Synerise — Behavioral AI Platform</span>
+  <span>Hub 1 / 6 — Behavioral Data Hub</span>
+</div>
+<div class="doc-page">
+  <h1 class="section">Hub 1 / 6 — Behavioral Data Hub</h1>
+  <p>Collect behavioral signals from every touchpoint, build continuously updated 360° profiles, and turn raw events into business-ready indicators through real-time aggregates and expressions — all on TerrariumDB, Synerise's proprietary database engine.</p>
+
+  <h2>Proven Results</h2>
+  <table class="light">
+    <thead><tr><th>Reference</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Empik</strong></td><td>1B personalized campaigns powered by unified behavioral profiles across 370+ stores, web, and app for 11M+ customers.</td></tr>
+      <tr><td><strong>150B+</strong></td><td>Behavioral sequences processed and structured into actionable profile data.</td></tr>
+      <tr><td><strong>MODIVO</strong></td><td>17 European markets — behavioral data unified across regions with no schema migration.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Selected Capabilities</h2>
+  <table class="banded">
+    <thead><tr><th style="width:210px">Capability</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Real-time Aggregates</strong></td><td>Profile-level summaries (purchase frequency, total spend, visits before conversion) computed and updated continuously as events arrive — not batch recalculated. The aggregate is always current.</td></tr>
+      <tr><td><strong>Real-time Expressions</strong></td><td>Custom formulas creating new profile or event attributes (urgency score, promotion sensitivity, basket strength, engagement decay risk). Computed in real time on every profile update — business logic as live data, not static rules.</td></tr>
+      <tr><td><strong>Identity Graph</strong></td><td>Merge behavioral histories across devices, sessions, and authentication states. Anonymous-to-known stitching the moment a customer identifies themselves — not on a nightly batch.</td></tr>
+      <tr><td><strong>Profile Cards (360°)</strong></td><td>Unified customer profiles with behavioral, transactional, AI-scored, and custom attributes in one view. Unlimited custom attributes — no caps on profile fields, no vendor-imposed limits.</td></tr>
+      <tr><td><strong>Real-time Segmentation</strong></td><td>&lt;100ms recalculation. Segments reflect current behavior, not yesterday's batch. Combine behavioral, transactional, AI-scored, and custom attributes in one query.</td></tr>
+      <tr><td><strong>Reverse ETL</strong></td><td>Push profiles, segments, and real-time aggregates back into Snowflake, BigQuery, Redshift, or any external system — without manual exports or waiting for data engineering.</td></tr>
+      <tr><td><strong>Consent Management</strong></td><td>Per-profile, per-channel consent state with full audit trail. GDPR/CCPA compliance as part of the profile, not a separate layer or external tool.</td></tr>
+      <tr><td><strong>Data Governance</strong></td><td>Schema-free data governance with access controls, retention policies, audit trails, and compliance automation across all behavioral data.</td></tr>
+      <tr><td><strong>TerrariumDB</strong> <span class="badge">Proprietary</span></td><td>Synerise's proprietary database engine built for behavioral intelligence, real-time processing, and schema-free data organization. &gt;360K queries/sec peak throughput.</td></tr>
+      <tr><td><strong>Multi-channel Event Capture</strong></td><td>Event ingestion from web, mobile, POS, IoT, and API sources with automatic schema detection. No pre-definition of event types required.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="metrics">
+    <div class="metric"><div class="metric-num">31B+</div><div class="metric-label">Events/month</div></div>
+    <div class="metric"><div class="metric-num">6B+</div><div class="metric-label">Profiles evaluated daily</div></div>
+    <div class="metric"><div class="metric-num">&lt;1ms</div><div class="metric-label">Data access</div></div>
+    <div class="metric"><div class="metric-num">&gt;90B</div><div class="metric-label">Queries/month</div></div>
+  </div>
+</div>
+
+<!-- ═══ HUB 2 ═══ -->
+<div class="running-header">
+  <span>Synerise — Behavioral AI Platform</span>
+  <span>Hub 2 / 6 — AI Hub</span>
+</div>
+<div class="doc-page">
+  <h1 class="section">Hub 2 / 6 — AI Hub</h1>
+  <p>Predict intent, recommend next actions, and support decisions using proprietary AI models (BaseModel.ai, Cleora.ai) and an agentic AI layer (Synerise Agent) — shaped by real-world deployment, benchmark comparisons against Google DeepMind and Meta AI, and scientific research.</p>
+
+  <h2>Proven Results</h2>
+  <table class="light">
+    <thead><tr><th>Reference</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td><strong>vs Google DeepMind</strong></td><td>24–62% more accurate than TIGER (NeurIPS 2023). Fewer wasted impressions, more revenue per touchpoint.</td></tr>
+      <tr><td><strong>vs Meta AI</strong></td><td>Up to 292% improvement over HSTU — the engine behind Facebook and Instagram recommendations.</td></tr>
+      <tr><td><strong>Cold-Start</strong></td><td>3.6× better cold-start performance than Meta's LIGER. New customers convert from the first interaction.</td></tr>
+      <tr><td><strong>AI Search</strong></td><td>26.72% CTR in production — 2–4× above e-commerce benchmarks. 10% of traffic drives 30% of revenue.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Selected Capabilities</h2>
+  <table class="banded">
+    <thead><tr><th style="width:210px">Capability</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Recommendations</strong></td><td>Similar products, personalized ranking, complete the look, recently viewed, context-aware, visual search, trending, bought together, and more. Specialized models per scenario, not one algorithm with config switches.</td></tr>
+      <tr><td><strong>Predictions</strong></td><td>Propensity, churn risk, LTV, next purchase category, promotion sensitivity. Updated continuously at profile level, powered by BaseModel.ai — not recalculated in weekly batches.</td></tr>
+      <tr><td><strong>AI Search</strong></td><td>Semantic search with intent understanding, typo tolerance, synonym handling. 26.72% CTR in production — 2–4× above e-commerce benchmarks. Agentic search mode for intelligent product discovery.</td></tr>
+      <tr><td><strong>Visual Search</strong></td><td>Product recognition from camera or image upload. Match by visual similarity across the catalog. From photograph to product page in seconds.</td></tr>
+      <tr><td><strong>Scoring &amp; Segmentation</strong></td><td>AI-generated scores as segment criteria. Combine predicted churn risk with behavioral aggregates and transactional data in one segmentation query.</td></tr>
+      <tr><td><strong>BaseModel.ai</strong> <span class="badge">Proprietary</span></td><td>Behavioral foundation model trained on 150B+ sequences, transferable across 18 industries. Zero-shot predictions without retraining. +23% avg. revenue lift for retail, +8.2pp AUC over incumbent ML models.</td></tr>
+      <tr><td><strong>Cleora.ai Engine</strong> <span class="badge">Proprietary</span></td><td>Proprietary graph embedding engine for high-performance user and product representations. Peer-reviewed research (published), production engine (proprietary).</td></tr>
+      <tr><td><strong>Privacy-by-Design Embeddings</strong></td><td>Non-reversible behavioral embeddings. Full prediction accuracy with zero compliance risk — behavioral data cannot be reverse-engineered to expose individual customer data.</td></tr>
+      <tr><td><strong>Cold-Start Solution</strong></td><td>3.6× better cold-start performance than Meta's LIGER. New customers and new products get relevant predictions from the first interaction, not after 10 sessions.</td></tr>
+      <tr><td><strong>Synerise Agent</strong> <span class="badge">Proprietary</span></td><td>Conversational AI layer that transforms natural language into platform-wide actions. Specialized agents for automation, content, campaigns, analytics, and recommendations — orchestrated by a meta-agent with guardrails and memory.</td></tr>
+      <tr><td><strong>MCP &amp; A2A Interoperability</strong></td><td>Model Context Protocol (MCP) and Agent-to-Agent (A2A) protocol support. Expose Synerise capabilities to external AI systems and enable multi-vendor agent collaboration.</td></tr>
+      <tr><td><strong>Shopping Assistant</strong></td><td>AI-powered conversational shopping agent for personalized product retrieval, guided discovery, and conversion optimization — deployed in-app or on-site.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="metrics">
+    <div class="metric"><div class="metric-num">30K</div><div class="metric-label">Decisions/sec</div></div>
+    <div class="metric"><div class="metric-num">&lt;1ms</div><div class="metric-label">Inference (p99)</div></div>
+    <div class="metric"><div class="metric-num">97.3%</div><div class="metric-label">AUC</div></div>
+    <div class="metric"><div class="metric-num">3.8B</div><div class="metric-label">Recommendations/month</div></div>
+  </div>
+</div>
+
+<!-- ═══ HUB 3 ═══ -->
+<div class="running-header">
+  <span>Synerise — Behavioral AI Platform</span>
+  <span>Hub 3 / 6 — Automation Hub</span>
+</div>
+<div class="doc-page">
+  <h1 class="section">Hub 3 / 6 — Automation Hub</h1>
+  <p>Connect customer behavior, business logic, and execution into one continuous workflow layer — behavior-triggered, not calendar-triggered. From campaign orchestration to retail media activation and operational automation in one system.</p>
+
+  <h2>Proven Results</h2>
+  <table class="light">
+    <thead><tr><th>Reference</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Empik</strong></td><td>5× conversion rate vs mass campaigns · 170M campaigns automated in real time.</td></tr>
+      <tr><td><strong>MODIVO</strong></td><td>+21% open rate · +18% CTR · +7% conversion rate — hyper-personalized campaigns across 17 markets, no additional discounts.</td></tr>
+      <tr><td><strong>Nike</strong></td><td>+26% orders through real-time orchestration across Nike Chile's digital stack.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Selected Capabilities</h2>
+  <table class="banded">
+    <thead><tr><th style="width:210px">Capability</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Behavior-triggered Workflows</strong></td><td>Start from profile events, audience entry/exit, data changes, business events, schedules, or external webhooks. The trigger library covers customer-facing and operational scenarios — not just calendar sends.</td></tr>
+      <tr><td><strong>AI Optimize Time</strong></td><td>Per-profile send time optimization. AI learns when each customer is most likely to engage and schedules delivery to that window — not a campaign-level "best hour" guess.</td></tr>
+      <tr><td><strong>AI Optimize Channel</strong></td><td>AI selects the best channel per customer (email vs push vs SMS vs WhatsApp) based on historical engagement patterns, not a marketer's assumption.</td></tr>
+      <tr><td><strong>Omnichannel Execution</strong></td><td>Email, SMS, WhatsApp, web push, mobile push, in-app, landing pages, on-site personalization — from one workflow, with shared personalization logic across all channels.</td></tr>
+      <tr><td><strong>Data Transformation Nodes</strong></td><td>Manipulate, filter, enrich, and restructure data inside the workflow. No need to pre-process externally or wait for data engineering.</td></tr>
+      <tr><td><strong>Webhook &amp; API Nodes</strong></td><td>Call any external API, send/receive payloads, handle authentication, transform responses — all inside the visual workflow builder. Full operational automation, not just messaging.</td></tr>
+      <tr><td><strong>Node-level Statistics</strong></td><td>Performance metrics at every node in the workflow. See exactly where customers drop, where delays occur, and where conversion happens — not a black box.</td></tr>
+      <tr><td><strong>Retail Media Audience Activation</strong></td><td>Push first-party behavioral audiences to retail media networks (VTEX Ads, Criteo, CitrusAd, Allegro Ads), DSPs, and paid social (Google, Meta, TikTok) in real time.</td></tr>
+      <tr><td><strong>Suppression &amp; Frequency Logic</strong></td><td>Suppress recent converters, control ad frequency, and prevent wasted impressions by syncing real-time purchase and engagement signals to ad platforms.</td></tr>
+      <tr><td><strong>Failure Recovery</strong></td><td>Webhook call fails → retry with exponential backoff → route to fallback action → alert operations team. Built-in resilience, not manual error handling.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="metrics">
+    <div class="metric"><div class="metric-num">12B</div><div class="metric-label">Decisions/month</div></div>
+    <div class="metric"><div class="metric-num">16×</div><div class="metric-label">Faster campaign setup</div></div>
+    <div class="metric"><div class="metric-num">+238%</div><div class="metric-label">Cart recovery</div></div>
+    <div class="metric"><div class="metric-num">−93%</div><div class="metric-label">Manual tasks</div></div>
+  </div>
+</div>
+
+<!-- ═══ HUB 4 ═══ -->
+<div class="running-header">
+  <span>Synerise — Behavioral AI Platform</span>
+  <span>Hub 4 / 6 — Decision Hub</span>
+</div>
+<div class="doc-page">
+  <h1 class="section">Hub 4 / 6 — Decision Hub</h1>
+  <p>Analyze behavior, measure performance, and optimize actions in real time — on TerrariumDB, designed for scale, speed, and schema-free modeling. From dashboards and campaign reporting to loyalty analytics and retail media measurement.</p>
+
+  <h2>Proven Results</h2>
+  <table class="light">
+    <thead><tr><th>Reference</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td><strong>AI Search</strong></td><td>10% of traffic drives 30% of revenue. Search users convert at 3× the site average.</td></tr>
+      <tr><td><strong>Empik</strong></td><td>NPS: 82 (online) / 86 (stores) — measured and optimized across 370+ stores and digital channels.</td></tr>
+      <tr><td><strong>Nike</strong></td><td>+30% demand growth driven by data-informed real-time decisioning.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Selected Capabilities</h2>
+  <table class="banded">
+    <thead><tr><th style="width:210px">Capability</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Real-time Dashboards</strong></td><td>Live behavioral and transactional data visualized without ETL delays. Custom widgets, filters, and dimensions reflecting your business structure — not preset templates.</td></tr>
+      <tr><td><strong>Funnel Analysis</strong></td><td>Multi-step conversion analysis with custom events, time windows, and breakdowns. See where customers drop and what distinguishes converters from non-converters.</td></tr>
+      <tr><td><strong>Segmentation Engine</strong></td><td>Combine behavioral, transactional, AI-scored, and custom attributes in one query. &lt;100ms recalculation. Segments update as events arrive, not on a nightly batch.</td></tr>
+      <tr><td><strong>Sankey Diagrams &amp; Path Analysis</strong></td><td>Visualize actual customer journeys across touchpoints. Identify the paths that lead to conversion and the ones that lead to churn — not assumed journeys, real ones.</td></tr>
+      <tr><td><strong>Custom Attribution Modeling</strong></td><td>Define your own attribution windows and logic beyond last-click or first-touch defaults. Model attribution around your actual customer journey.</td></tr>
+      <tr><td><strong>Schema-free Querying</strong> <span class="badge">Proprietary</span></td><td>Query across profiles, products, and transactions in one query without pre-joining tables — powered by TerrariumDB. No data engineering ticket to ask a new question.</td></tr>
+      <tr><td><strong>Campaign Performance Management</strong></td><td>Real-time dashboards for delivery, engagement, revenue attribution, and control group testing. Measure incremental uplift with statistical significance, not just correlation.</td></tr>
+      <tr><td><strong>Loyalty Performance Management</strong></td><td>Track membership health, points economy, tier dynamics, and engagement behavior. Combine historical analysis with AI-powered predictions — churn probability scoring, revenue uplift forecasting, and tier migration prediction.</td></tr>
+      <tr><td><strong>Conversion Measurement (Online + Offline)</strong></td><td>Close the measurement loop for retail media by matching ad exposures to online transactions and in-store POS events. Incremental lift measurement, cross-device tracking, and true ROAS attribution.</td></tr>
+      <tr><td><strong>Retail Media Decisioning &amp; Reporting</strong></td><td>Share reports and insights with CPG partners on your terms. Control what data is visible, set access rules per brand, and deliver performance dashboards — without exposing raw customer data.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="metrics">
+    <div class="metric"><div class="metric-num">&gt;90B</div><div class="metric-label">Queries/month</div></div>
+    <div class="metric"><div class="metric-num">&gt;360K</div><div class="metric-label">Queries/sec peak</div></div>
+    <div class="metric"><div class="metric-num">&lt;100ms</div><div class="metric-label">Segment recalculation</div></div>
+    <div class="metric"><div class="metric-num">21B</div><div class="metric-label">API calls/month</div></div>
+  </div>
+</div>
+
+<!-- ═══ HUB 5 ═══ -->
+<div class="running-header">
+  <span>Synerise — Behavioral AI Platform</span>
+  <span>Hub 5 / 6 — Data Modeling Hub</span>
+</div>
+<div class="doc-page">
+  <h1 class="section">Hub 5 / 6 — Data Modeling Hub</h1>
+  <p>A flexible structural layer for schema evolution, interoperability, and industry-specific entity modeling — products, contracts, stores, devices, policies, or any domain-specific object. Model data around your business, not around platform limits.</p>
+
+  <h2>Proven Results</h2>
+  <table class="light">
+    <thead><tr><th>Reference</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Empik</strong></td><td>370+ stores, web, and app — unified entity model across physical and digital touchpoints for 11M+ customers.</td></tr>
+      <tr><td><strong>MODIVO</strong></td><td>17 European markets with region-specific catalogs, schemas, and product structures — zero migrations.</td></tr>
+      <tr><td><strong>18 Industries</strong></td><td>BaseModel.ai transferable across 18 industries without retraining — schema flexibility that supports any domain.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Selected Capabilities</h2>
+  <table class="banded">
+    <thead><tr><th style="width:210px">Capability</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Custom Entity Types</strong></td><td>Define any business object: products, stores, contracts, devices, service plans, reservations, claims, subscriptions. Not limited to a preset list of "supported objects."</td></tr>
+      <tr><td><strong>Dynamic Schema Evolution</strong></td><td>Add new attributes, entity types, and relationships in production. No migrations, no downtime, no re-ingestion — schema-free, not schema-rigid.</td></tr>
+      <tr><td><strong>Relationship Graphs</strong></td><td>Model dependencies between entities: product belongs to category, category has margin rules, store carries subset of catalog. The system understands your business structure, not just flat attribute lists.</td></tr>
+      <tr><td><strong>Catalogs</strong></td><td>Structured product and item management with attributes, categories, and search. Real-time sync with external PIM systems.</td></tr>
+      <tr><td><strong>Custom Events</strong></td><td>Define and capture business-specific events with custom attributes and schemas. No pre-definition required — events are ingested as they arrive.</td></tr>
+      <tr><td><strong>Voucher Pools</strong></td><td>Promotion codes, loyalty rewards, and discount mechanics as structured entities with rules, limits, and real-time redemption tracking.</td></tr>
+      <tr><td><strong>Import &amp; Export</strong></td><td>Bulk and streaming data exchange via CSV, API, SFTP, webhook-triggered. Bi-directional sync with PIM, ERP, and external catalogs with conflict resolution.</td></tr>
+      <tr><td><strong>Expressions &amp; Aggregates</strong></td><td>Reusable computed attributes and metrics defined at the data model level. Shared across segmentation, automation, and analytics.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="metrics">
+    <div class="metric"><div class="metric-num">3×</div><div class="metric-label">Faster time-to-value</div></div>
+    <div class="metric"><div class="metric-num">0</div><div class="metric-label">Migrations for schema changes</div></div>
+    <div class="metric" style="grid-column:span 2"><div class="metric-num">Unlimited</div><div class="metric-label">Custom entities</div></div>
+  </div>
+</div>
+
+<!-- ═══ HUB 6 ═══ -->
+<div class="running-header">
+  <span>Synerise — Behavioral AI Platform</span>
+  <span>Hub 6 / 6 — Experience Hub</span>
+</div>
+<div class="doc-page">
+  <h1 class="section">Hub 6 / 6 — Experience Hub</h1>
+  <p>Omnichannel experience layer with flexible delivery, template-based speed, configurable logic, and enterprise-ready execution. Design and deliver experiences across every channel with full brand and permission control.</p>
+
+  <h2>Proven Results</h2>
+  <table class="light">
+    <thead><tr><th>Reference</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Nike</strong></td><td>+30% sales per ticket through WhatsApp commerce and AI recommendations across the full digital stack.</td></tr>
+      <tr><td><strong>Empik</strong></td><td>NPS: 82 (online) / 86 (stores) — omnichannel personalization across 370+ stores, web, and app.</td></tr>
+      <tr><td><strong>MODIVO</strong></td><td>+21% open rate · +18% CTR · +7% conversion rate — hyper-personalized experiences across 17 markets.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Selected Capabilities</h2>
+  <table class="banded">
+    <thead><tr><th style="width:210px">Capability</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Dynamic Content (Inserts)</strong></td><td>Personalized content blocks usable across email, SMS, push, web push, in-app, automation, and screen views. One insert, many channels — not duplicated content per touchpoint.</td></tr>
+      <tr><td><strong>Behavioral CMS</strong> <span class="badge">Proprietary</span></td><td>World's first behavioral CMS. Build hyper-personalized 1:1 experiences with a single API call without affecting performance. Schema-based content with real-time personalization, Jinjava logic, and live external data connections (ERP, CRM, PIM).</td></tr>
+      <tr><td><strong>Email</strong></td><td>Template-based and code-based email with deep personalization, A/B testing, deliverability optimization, and Jinjava logic. Enterprise sending infrastructure.</td></tr>
+      <tr><td><strong>Mobile &amp; Web Push</strong></td><td>iOS, Android, and browser push notifications unified in one system. Deep linking, rich media, behavioral targeting, per-profile send time optimization, and frequency control.</td></tr>
+      <tr><td><strong>SMS, RCS &amp; WhatsApp</strong></td><td>Two-way messaging across SMS, RCS, and WhatsApp with template management, personalization, conversational flows, and compliance-ready delivery infrastructure.</td></tr>
+      <tr><td><strong>In-App Messages</strong></td><td>Contextual in-app overlays, banners, modals, and slide-ins triggered by real-time behavior, segments, or automation workflows. Native SDK for iOS and Android.</td></tr>
+      <tr><td><strong>Loyalty Programs</strong></td><td>Points-based, tier-based, and hybrid loyalty mechanics with real-time earning, redemption, and tier progression. Configurable rules for accrual, expiration, and partner integration — managed inside the platform, not bolted on.</td></tr>
+      <tr><td><strong>Personalized Promotions</strong></td><td>AI-driven promotion targeting based on predicted purchase behavior, price sensitivity, and churn risk. Deliver the right offer to the right customer — not blanket discounts that erode margin.</td></tr>
+      <tr><td><strong>Vouchers &amp; Coupon Management</strong></td><td>Voucher pools with unique codes, redemption limits, time windows, and per-profile assignment. Real-time tracking of issuance, usage, and fraud patterns.</td></tr>
+      <tr><td><strong>Landing Pages &amp; Screen Views</strong></td><td>Create campaign-specific pages and in-app screens from one environment. No developer dependency for launch. Full personalization and A/B testing.</td></tr>
+      <tr><td><strong>Onsite &amp; In-Store Personalization</strong></td><td>Extend personalization to onsite search boost, sponsored placements, and in-store digital signage — using the same audience intelligence that powers paid media and direct channels.</td></tr>
+      <tr><td><strong>API Content Services</strong></td><td>Headless content delivery API for chatbots, AI agents, voice assistants, and custom frontends. Serve personalized, behavioral-context-aware content programmatically.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="metrics">
+    <div class="metric"><div class="metric-num">+40%</div><div class="metric-label">Revenue from personalization</div></div>
+    <div class="metric"><div class="metric-num">−50%</div><div class="metric-label">Acquisition costs</div></div>
+    <div class="metric" style="grid-column:span 2"><div class="metric-num">89%</div><div class="metric-label">Retention with omnichannel</div></div>
+  </div>
+</div>
+
+<!-- ═══ §6 ENDORSEMENTS ═══ -->
+<div class="running-header">
+  <span>Synerise — Behavioral AI Platform</span>
+  <span>6. Endorsed by Industry Leaders</span>
+</div>
+<div class="doc-page">
+  <h1 class="section">Endorsed by Industry Leaders</h1>
+  <p>Trusted by Gartner MQ leaders, NYSE-listed enterprises, and the world's largest technology companies.</p>
+
+  <blockquote>
+    "The best model for behavior prediction we had the opportunity to test."
+    <cite><strong>Geraldo Thomaz</strong> <span class="role">— Co-CEO, VTEX — NYSE-listed, 3,500+ stores across 43 countries. $8.5M strategic investment in Synerise (Series B+, July 2024).</span></cite>
+  </blockquote>
+
+  <blockquote>
+    "Outperforms every model it meets."
+    <cite><strong>Simon Hay</strong> <span class="role">— CEO, dunnhumby — Gartner MQ Leader powering loyalty and personalization for the world's largest grocery retailers.</span></cite>
+  </blockquote>
+
+  <div class="quote-intense">
+    "Synerise is able to track every event, across every channel, for the customer — whether it's mobile, it's web, it's retail, physical presence. All of that is signal that's being continuously collected, processed, and then in turn AI is being applied, workflows are being applied to drive the experience."
+    <cite><strong>Satya Nadella</strong> — CEO, Microsoft</cite>
+  </div>
+
+  <hr>
+
+  <h2>Incorporation of Master Subscription and Services Agreement</h2>
+  <div class="info-box">
+    <strong>INCORPORATION OF MASTER SUBSCRIPTION AND SERVICES AGREEMENT</strong><br><br>
+    By signing this Order Form, Customer hereby agrees to be bound by the terms of this Order Form and the Master Subscription and Services Agreement, which is attached and incorporated herein as Exhibit A. The Master Subscription and Services Agreement constitutes an integral part of the Agreement.
+  </div>
+
+  <h2>Signatures</h2>
+  <table class="signatures">
+    <tbody>
+      <tr>
+        <td><strong>Customer</strong><br><br><strong>Name:</strong> ___________________________<br><strong>Title:</strong> ___________________________<br><strong>Date:</strong> ___________________________</td>
+        <td><strong>Synerise SA</strong><br><br><strong>Name:</strong> ___________________________<br><strong>Title:</strong> ___________________________<br><strong>Date:</strong> ___________________________</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-footer">synerise.com &nbsp;·&nbsp; © 2026 Synerise SA &nbsp;·&nbsp; Prepared 2026 &nbsp;·&nbsp; Platform Reference Document</div>
+</div>
+
+</body>
+</html>
