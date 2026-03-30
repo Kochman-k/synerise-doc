@@ -142,22 +142,18 @@
   }
   table.default th {
     font-weight: 500;
-    padding: 5px 8px;
-    border-left: 1px solid #000;
-    border-right: 1px solid #000;
-    border-top: 1px solid #000;
+    padding: 8px 10px;
     border-bottom: 2px solid #000;
     text-align: left;
     background: #fff;
   }
   table.default td {
-    padding: 5px 8px;
-    border-left: 1px solid #000;
-    border-right: 1px solid #000;
-    border-bottom: 1px solid #000;
+    padding: 8px 10px;
+    border-bottom: 1px solid #d0d0d0;
     vertical-align: top;
-    line-height: 1.4;
+    line-height: 1.5;
   }
+  table.default tr:last-child td { border-bottom: none; }
 
   /* Light grid — bold header, dotted inner lines */
   table.light {
@@ -195,9 +191,10 @@
     border-bottom: 2px solid #000;
   }
   table.banded td {
-    padding: 5px 8px;
+    padding: 8px 10px;
+    border-bottom: 1px solid #d0d0d0;
     vertical-align: top;
-    line-height: 1.4;
+    line-height: 1.5;
   }
   table.banded tr:nth-child(odd) td { background: #fff; }
   table.banded tr:nth-child(even) td { background: #fff; }
